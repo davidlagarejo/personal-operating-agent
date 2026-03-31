@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DavidSan Dashboard Demo</title>
+    <style>
+      :root {
+        --bg: #f4f5f7;
+        --panel: #ffffff;
+        --ink: #101828;
+        --muted: #667085;
+        --line: #e5e7eb;
+        --brand: #18b564;
+        --brand-soft: #e9f9f0;
+        --warning: #f04438;
+        --nav: #0e1738;
+        --chip: #f2f4f7;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: var(--bg);
+        color: var(--ink);
+      }
+
+      .windowbar {
+        height: 52px;
+        background: var(--nav);
+        display: flex;
+        align-items: center;
+        padding: 0 18px;
+        gap: 10px;
+      }
+
+      .dot {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+      }
+
+      .dot.red { background: #ff5f57; }
+      .dot.yellow { background: #febc2e; }
+      .dot.green { background: #28c840; }
+
+      .app {
+        display: grid;
+        grid-template-columns: 76px 1.08fr 1fr;
+        min-height: calc(100vh - 52px);
+      }
+
+      .sidebar {
+        background: #f7f7f8;
+        border-right: 1px solid var(--line);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 22px 0;
+        gap: 20px;
+      }
+
+      .sideicon {
+        width: 46px;
+        height: 46px;
+        border-radius: 14px;
+        background: white;
+        border: 1px solid var(--line);
+        display: grid;
+        place-items: center;
+        font-size: 22px;
+      }
+
+      .panel {
+        background: var(--panel);
+        border-right: 1px solid var(--line);
+      }
+
+      .header {
+        padding: 22px 28px 18px;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .titleblock h1 {
+        margin: 0;
+        font-size: 31px;
+        line-height: 1;
+      }
+
+      .subtitle {
+        margin-top: 6px;
+        color: var(--muted);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-size: 13px;
+      }
+
+      .tabs {
+        display: flex;
+        gap: 28px;
+        color: #98a2b3;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .tabs .active {
+        color: var(--ink);
+        border-bottom: 2px solid var(--brand);
+        padding-bottom: 8px;
+      }
+
+      .content {
+        padding: 28px;
+      }
+
+      .date {
+        color: #98a2b3;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-size: 13px;
+        margin-bottom: 18px;
+      }
+
+      .priority {
+        border: 1px solid var(--line);
+        border-left: 4px solid var(--warning);
+        border-radius: 20px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 12px 40px rgba(16, 24, 40, 0.06);
+      }
+
+      .priority-banner {
+        background: var(--brand);
+        color: white;
+        padding: 14px 20px;
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .priority-body {
+        padding: 22px 26px 26px;
+      }
+
+      .row {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .project {
+        font-size: 38px;
+        line-height: 1;
+        margin: 0 0 8px;
+      }
+
+      .meta {
+        color: var(--muted);
+        font-size: 16px;
+      }
+
+      .score {
+        background: var(--brand-soft);
+        color: #0f8a49;
+        font-size: 28px;
+        font-weight: 700;
+        border-radius: 999px;
+        padding: 12px 18px;
+      }
+
+      .why {
+        margin-top: 20px;
+        background: #f6fdf8;
+        border-radius: 18px;
+        border-left: 5px solid var(--brand);
+        padding: 18px 20px;
+      }
+
+      .why h3,
+      .section h3 {
+        margin: 0 0 12px;
+        color: #13a357;
+        letter-spacing: 0.08em;
+        font-size: 15px;
+        text-transform: uppercase;
+      }
+
+      .why ul,
+      .chat-card ol {
+        margin: 0;
+        padding-left: 22px;
+        line-height: 1.6;
+      }
+
+      .summary {
+        margin: 22px 0 26px;
+        font-size: 18px;
+        line-height: 1.6;
+      }
+
+      .section {
+        margin-top: 22px;
+      }
+
+      .bars {
+        display: grid;
+        gap: 14px;
+      }
+
+      .barrow {
+        display: grid;
+        grid-template-columns: 120px 1fr 54px;
+        align-items: center;
+        gap: 12px;
+        color: var(--muted);
+      }
+
+      .track {
+        background: #eef1f4;
+        border-radius: 999px;
+        height: 8px;
+        overflow: hidden;
+      }
+
+      .fill {
+        height: 100%;
+        border-radius: 999px;
+      }
+
+      .fill.good { background: var(--brand); }
+      .fill.bad { background: #ef6b63; }
+
+      .refs {
+        margin-top: 18px;
+        display: grid;
+        gap: 14px;
+      }
+
+      .refcard {
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 18px;
+        background: #fcfcfd;
+      }
+
+      .refcard strong {
+        display: block;
+        font-size: 18px;
+        margin-bottom: 6px;
+      }
+
+      .agent {
+        background: #fbfbfc;
+      }
+
+      .agent-content {
+        padding: 28px;
+        display: grid;
+        gap: 18px;
+      }
+
+      .chiprow {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .chip {
+        background: var(--chip);
+        color: var(--muted);
+        border-radius: 999px;
+        padding: 8px 12px;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .chat-card {
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 22px 24px;
+        line-height: 1.65;
+      }
+
+      .callout {
+        background: #111214;
+        color: #f8fafc;
+        border-radius: 18px;
+        padding: 18px 20px;
+        font-size: 17px;
+        line-height: 1.5;
+      }
+
+      .highlight {
+        background: rgba(83, 136, 255, 0.35);
+        padding: 2px 6px;
+        border-radius: 8px;
+      }
+
+      .timeline {
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 22px 24px;
+      }
+
+      .timeline h3 {
+        margin: 0 0 14px;
+        font-size: 15px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+      }
+
+      .titem {
+        display: grid;
+        grid-template-columns: 130px 1fr;
+        gap: 12px;
+        padding: 10px 0;
+        border-top: 1px solid #eef0f2;
+      }
+
+      .titem:first-of-type {
+        border-top: 0;
+        padding-top: 0;
+      }
+
+      .tdate {
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .composer {
+        margin-top: auto;
+        padding: 18px 28px 24px;
+        border-top: 1px solid var(--line);
+        background: white;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .input {
+        flex: 1;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 16px 18px;
+        color: #98a2b3;
+      }
+
+      .send {
+        width: 46px;
+        height: 46px;
+        border-radius: 14px;
+        border: 0;
+        background: #111214;
+        color: white;
+        font-size: 18px;
+      }
+
+      @media (max-width: 1200px) {
+        .app {
+          grid-template-columns: 76px 1fr;
+        }
+
+        .agent {
+          grid-column: 1 / -1;
+          border-top: 1px solid var(--line);
+        }
+      }
+
+      @media (max-width: 800px) {
+        .app {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          display: none;
+        }
+
+        .panel {
+          border-right: 0;
+        }
+
+        .header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .project {
+          font-size: 30px;
+        }
+
+        .barrow,
+        .titem {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="windowbar">
+      <div class="dot red"></div>
+      <div class="dot yellow"></div>
+      <div class="dot green"></div>
+    </div>
+    <main class="app">
+      <aside class="sidebar">
+        <div class="sideicon">🚀</div>
+        <div class="sideicon">↻</div>
+      </aside>
+
+      <section class="panel">
+        <div class="header">
+          <div class="titleblock">
+            <h1>NSF SBIR</h1>
+            <div class="subtitle">Active project</div>
+          </div>
+          <div class="tabs">
+            <div class="active">Priorities</div>
+            <div>Phi asks</div>
+            <div>Queue</div>
+          </div>
+        </div>
+
+        <div class="content">
+          <div class="date">Today · March 31, 2026</div>
+
+          <article class="priority">
+            <div class="priority-banner">Priority #1 · Phi recommends starting here</div>
+            <div class="priority-body">
+              <div class="row">
+                <div>
+                  <h2 class="project">NSF SBIR</h2>
+                  <div class="meta">Grant · Research &amp; Development · USA · 2026-03-30</div>
+                </div>
+                <div class="score">85%</div>
+              </div>
+
+              <section class="why">
+                <h3>Why first</h3>
+                <ul>
+                  <li>Type: grant. Action: prepare a detailed proposal highlighting the ultrasonic sensor's impact on industrial CO2 monitoring.</li>
+                  <li>Strong alignment with David's cleantech profile and sensor background.</li>
+                  <li>The program funds high-quality startup research with strong innovation potential.</li>
+                </ul>
+              </section>
+
+              <p class="summary">
+                The NSF SBIR program funds startups across multiple technology areas and supports early R&amp;D with non-dilutive capital. In the current stack of open opportunities, it stands out because it combines strong profile fit, meaningful upside, and near-term strategic relevance.
+              </p>
+
+              <section class="section">
+                <h3>Fit breakdown</h3>
+                <div class="bars">
+                  <div class="barrow">
+                    <div>Profile</div>
+                    <div class="track"><div class="fill good" style="width: 90%"></div></div>
+                    <div>90%</div>
+                  </div>
+                  <div class="barrow">
+                    <div>Timing</div>
+                    <div class="track"><div class="fill good" style="width: 80%"></div></div>
+                    <div>80%</div>
+                  </div>
+                  <div class="barrow">
+                    <div>ROI</div>
+                    <div class="track"><div class="fill good" style="width: 75%"></div></div>
+                    <div>75%</div>
+                  </div>
+                  <div class="barrow">
+                    <div>Risk</div>
+                    <div class="track"><div class="fill bad" style="width: 30%"></div></div>
+                    <div>30%</div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="section">
+                <h3>Reference sources</h3>
+                <div class="refs">
+                  <div class="refcard">
+                    <strong>NSF Small Business Innovation Research / Small Business Technology Transfer</strong>
+                    Public program overview and eligibility context used to justify the recommendation and fit.
+                  </div>
+                  <div class="refcard">
+                    <strong>How It Works: The Basics</strong>
+                    Supporting source for process expectations, program framing, and proposal preparation constraints.
+                  </div>
+                </div>
+              </section>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel agent">
+        <div class="header">
+          <div class="titleblock">
+            <h1 style="font-size: 28px;">Phi-4</h1>
+            <div class="subtitle">Local · Private · Active</div>
+          </div>
+          <div class="chiprow">
+            <div class="chip">fine-tuned</div>
+            <div class="chip">file-aware</div>
+            <div class="chip">n8n workflows</div>
+          </div>
+        </div>
+
+        <div class="agent-content">
+          <div class="chat-card">
+            I already have the context for the U.S. Department of Energy Industrial Technologies Office loaded. Where should we start?
+          </div>
+
+          <div class="callout">
+            <span class="highlight">You have not added the NSF SBIR deadline yet. That needs to be captured and added to the timeline before planning the proposal sequence.</span>
+          </div>
+
+          <div class="chat-card">
+            <strong>To incorporate the SBIR deadline:</strong>
+            <ol>
+              <li>Identify the final submission date for the SBIR proposal.</li>
+              <li>Integrate that date into the active timeline so the earlier phases align correctly.</li>
+              <li>Update the project schedule and return the revised execution path for review.</li>
+            </ol>
+            <p>Next step: I will update the calendar with the SBIR deadline and use it to restructure the proposal sequence.</p>
+          </div>
+
+          <section class="timeline">
+            <h3>Execution timeline</h3>
+            <div class="titem">
+              <div class="tdate">Today</div>
+              <div>Confirm the official SBIR deadline and sync it into the project timeline.</div>
+            </div>
+            <div class="titem">
+              <div class="tdate">Next</div>
+              <div>Re-rank proposal tasks based on the updated deadline and current strategic fit.</div>
+            </div>
+            <div class="titem">
+              <div class="tdate">After that</div>
+              <div>Draft the proposal outline and generate the first execution-focused email and follow-up tasks.</div>
+            </div>
+          </section>
+        </div>
+
+        <div class="composer">
+          <div class="input">Message the agent...</div>
+          <button class="send">↗</button>
+        </div>
+      </section>
+    </main>
+  </body>
+  </html>

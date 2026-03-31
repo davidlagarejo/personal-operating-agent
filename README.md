@@ -6,6 +6,21 @@ Your privacy-first AI agent for professional positioning and high-priority execu
 
 This repository is the public-facing version of that system: a clean technical foundation, early package structure, tests, documentation, and contribution scaffolding for building in the open.
 
+## Demo
+
+This public repo now includes an English dashboard demo based on the real interaction model behind `DavidSan`.
+
+- dashboard demo: [examples/dashboard-demo.html](examples/dashboard-demo.html)
+- dashboard notes: [docs/dashboard.md](docs/dashboard.md)
+- architecture overview: [docs/architecture.md](docs/architecture.md)
+
+The demo is intentionally lightweight, but it shows the shape of the product:
+
+- a priority-driven workspace instead of a flat chat
+- proactive questioning from the model when key context is missing
+- rationale, fit scoring, and references behind recommendations
+- a timeline layer that keeps execution centered on what matters most
+
 ## Why This Project Exists
 
 Most AI writing tools help people write faster.
@@ -149,6 +164,8 @@ The timeline is especially important.
 
 It helps maintain focus on the highest-priority work, makes sequencing and deadlines visible, reduces drift, and prevents strategically important tasks from being buried under reactive noise.
 
+This matters because the product is not only trying to generate good language. It is trying to keep the user oriented toward the highest-value next move.
+
 ## Run Locally
 
 ```bash
@@ -189,6 +206,7 @@ Next logical steps:
 - include safe prompt examples
 - document more of the fine-tuned `Phi-4` interaction model
 - expose more of the execution workflow design
+- turn more of the dashboard behavior into reproducible public demos
 - add a lightweight privacy and review layer
 
 ## Open Roadmap
